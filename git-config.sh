@@ -52,3 +52,6 @@ echo -e "/n"
 
 # Test connection
 ssh -T git@github.com
+
+# Finally change the repo over to SSH
+git remote set-url origin git@github.com:jmacadie/bootstrap-server.git
