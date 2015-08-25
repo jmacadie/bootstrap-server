@@ -1,0 +1,54 @@
+#!/bin/sh
+
+# Set global params
+# -------------------------------------
+
+git config --global user.name "James MacAdie (server name)"
+git config --global user.email "james@macadie.co.uk"
+
+git config --global core.editor "vim"
+
+git config --global alias.lol "log --pretty=oneline --abbrev-commit --graph
+--decorate"
+git config --global alias.logs "log --stat"
+git config --global alias.co "checkout"
+git config --global alias.br "branch"
+git config --global alias.ci "commit"
+git config --global alias.st "status"
+git config --global alias.unstage "reset HEAD --"
+git config --global alias.last "log -1 HEAD"
+git config --global alias.df "diff"
+git config --global alias.dfs "diff --cached"
+
+# Set up SSH connection
+# https://help.github.com/articles/generating-ssh-keys/#platform-linux
+# -------------------------------------
+
+# Check for existing keys
+# ls -la ~/.shh
+# If already have a key then can skip generating a new key below
+
+# Generate new SSH key
+ssh-keygen -t rsa -b 4096 -C "james@macadie.co.uk"
+
+# Add key to agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/is_rsa
+
+# Add key to github account
+echo "1) Copy text of following file"
+echo -e "/n - - - - - /n"
+cat ~/.ssh/id_rsa.pub
+echo -e "/n - - - - - /n"
+echo "2) Go to http://github.com
+3) Go to Settings > SSH Keys
+4) Click Add SSH Key
+5) Add a title so can differntiate (preferably this server name)
+6) Paste copied key text into Key field
+7) Click Add Key"
+echo -n "Press any key when done ..."
+read -s response
+echo -e "/n"
+
+# Test connection
+ssh -T git@github.com
