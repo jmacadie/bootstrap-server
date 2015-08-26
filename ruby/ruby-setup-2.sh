@@ -24,3 +24,15 @@ sudo apt-get update
 
 # Install Passenger + Nginx
 sudo apt-get install -y nginx-extras passenger
+
+# Enable Passenger Nginx module
+sudo sed -i "s/# passenger_root/passenger_root/g" /etc/nginx/nginx.conf
+sudo sed -i "s/# passenger_ruby/passenger_ruby/g" /etc/nginx/nginx.conf
+
+# Restart Nginx
+sudo service nginx restart
+
+# Check it went OK
+echo Checking everything intsalled correctly
+sudo passenger-config validate-install
+sudo passenger-memory-stats
