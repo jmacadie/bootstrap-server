@@ -36,3 +36,6 @@ sudo service nginx restart
 echo Checking everything intsalled correctly
 sudo passenger-config validate-install
 sudo passenger-memory-stats
+
+# Install rails (specific version)
+gem install rails -v 4.2.2
