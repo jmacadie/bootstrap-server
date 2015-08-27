@@ -2,7 +2,7 @@
 
 echo -n "Provide a username > "
 read uname
-echo "Hello, $uname"
+echo "Adding $uname ..."
 
 sudo adduser $uname
 
@@ -15,10 +15,6 @@ sudo sh -c "chmod 700 ~$uname/.ssh"
 sudo sh -c "chmod 600 ~$uname/.ssh/*"
 
 # Move config files (so experience is the same)
-sudo sh -c "cp -r ../.bash/ ~$uname/.bash/"
-
-sudo sh -c "rm -f ~$uname/.bashrc"
-sudo sh -c "cp -r ../.bashrc ~$uname/.bashrc"
-
-sudo sh -c "rm -f ~$uname/.vimrc"
-sudo sh -c "cp -r ../.vimrc ~$uname/.vimrc"
+sudo sh -c "cp -rf ../.bash/ ~$uname/.bash/"
+sudo sh -c "cp -rf ../.bashrc ~$uname/.bashrc"
+sudo sh -c "cp -rf ../.vimrc ~$uname/.vimrc"

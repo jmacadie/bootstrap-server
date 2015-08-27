@@ -4,10 +4,10 @@ set -e
 
 echo "Moving base config files"
 
-cp -r .bash/ ~/.bash/
+cp -rf .bash/ ~/.bash/
+cp -f .bashrc ~/.bashrc
+cp -f .vimrc ~/.vimrc
 
-rm -f ~/.bashrc
-cp .bashrc ~/.bashrc
-
-rm -f ~/.vimrc
-cp .vimrc ~/.vimrc
+sudo cp -rf .bash/ ~root/.bash/
+sudo cp -f .bashrc ~root/.bashrc
+sudo cp -f .vimrc ~root/.vimrc
