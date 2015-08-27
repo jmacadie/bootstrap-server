@@ -18,9 +18,9 @@ sudo sh -c "chmod 700 ~$APP_NAME/.ssh"
 sudo sh -c "chmod 600 ~$APP_NAME/.ssh/*"
 
 # Move config files (so experience is the same)
-sudo sh -c "cp -rf ../.bash/ ~$APP_NAME/.bash/"
-sudo sh -c "cp -rf ../.bashrc ~$APP_NAME/.bashrc"
-sudo sh -c "cp -rf ../.vimrc ~$APP_NAME/.vimrc"
+sudo sh -c "cp -rf $HOME/.bash/ ~$APP_NAME/.bash/"
+sudo sh -c "cp -rf $HOME/.bashrc ~$APP_NAME/.bashrc"
+sudo sh -c "cp -rf $HOME/.vimrc ~$APP_NAME/.vimrc"
 
 # Create a shell folder with the right user permissions
 sudo mkdir -p /var/www/$APP_NAME
