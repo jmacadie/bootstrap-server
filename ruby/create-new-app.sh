@@ -24,30 +24,23 @@ sudo sh -c "cp -rf $HOME/.vimrc ~$APP_NAME/.vimrc"
 
 # Create a shell folder with the right user permissions
 sudo mkdir -p /var/www/$APP_NAME
-chown -R $APP_NAME: /var/www/$APP_NAME
-
-# Log in as the new user
-sudo -u $APP_NAME -H bash -l
+sudo sh -c "chown -R $APP_NAME: /var/www/$APP_NAME"
 
 # Set ruby version
-rvm use ruby-2.2.1
-
-cd /var/www/$APP_NAME
-rails new $APP_NAME -B
-
-# Run Bundle install
-cd $APP_NAME
-bundle install --path vendor/bundle --without-production
-
-# Tighten security on sensitive bits
-chmod 700 config db
-chmod 600 config/database.yml config/secrets.yml
+sudo runuser -l $APP_NAME -c \
+"rvm use ruby-2.2.1; \
+\
+cd /var/www/$APP_NAME; \
+rails new $APP_NAME -B; \
+\
+cd $APP_NAME; \
+bundle install --path vendor/bundle --without production; \
+\
+chmod 700 config db; \
+chmod 600 config/database.yml config/secrets.yml"
 
 # Find the location of ruby
 RUBY_PATH=$(passenger-config about ruby-command | grep Nginx | cut -d':' -f2 | sed -e 's/^[[:space:]]*//' | cut -d' ' -f2)
-
-# Exit from new user
-exit
 
 # Set up virtual host
 ROOT_PATH=/var/www/$APP_NAME/$APP_NAME/public
