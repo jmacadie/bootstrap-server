@@ -22,8 +22,8 @@ sudo sh -c "cp -rf ../.bash/ ~$APP_NAME/.bash/"
 sudo sh -c "cp -rf ../.bashrc ~$APP_NAME/.bashrc"
 sudo sh -c "cp -rf ../.vimrc ~$APP_NAME/.vimrc"
 
-# Create the app
-rails new /var/www/$APP_NAME -B
+# Create a shell folder with the right user permissions
+sudo mkdir -p /var/www/$APP_NAME
 chown -R $APP_NAME: /var/www/$APP_NAME
 
 # Log in as the new user
@@ -32,9 +32,12 @@ sudo -u $APP_NAME -H bash -l
 # Set ruby version
 rvm use ruby-2.2.1
 
-# Run Bundle install
 cd /var/www/$APP_NAME
-bundle install --path vendor/bundle
+rails new $APP_NAME -B
+
+# Run Bundle install
+cd $APP_NAME
+bundle install --path vendor/bundle --without-production
 
 # Tighten security on sensitive bits
 chmod 700 config db
@@ -47,8 +50,7 @@ RUBY_PATH=$(passenger-config about ruby-command | grep Nginx | cut -d':' -f2 | s
 exit
 
 # Set up virtual host
-SERVER=ruby.julianrimet.com
-ROOT_PATH=/var/www/$APP_NAME/public
+ROOT_PATH=/var/www/$APP_NAME/$APP_NAME/public
 sudo tee /etc/nginx/sites-available/$APP_NAME.conf >/dev/null <<EOF
 server {
   listen 80;
