@@ -49,7 +49,7 @@ exit
 # Set up virtual host
 SERVER=ruby.julianrimet.com
 ROOT_PATH=/var/www/$APP_NAME/public
-sudo tee /etc/nginx/sites-available/test.conf >/dev/null <<EOF
+sudo tee /etc/nginx/sites-available/$APP_NAME.conf >/dev/null <<EOF
 server {
   listen 80;
   server_name $SERVER;
@@ -63,6 +63,7 @@ server {
   ruby_env development;
 }
 EOF
+sudo ln -s /etc/nginx/sites-available/$APP_NAME.conf /etc/nginx/sites-enabled/$APP_NAME.conf
 
 # Restart Nginx
 sudo service nginx restart
