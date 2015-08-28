@@ -40,7 +40,11 @@ chmod 700 config db; \
 chmod 600 config/database.yml config/secrets.yml"
 
 # Find the location of ruby
-RUBY_PATH=$(passenger-config about ruby-command | grep Nginx | cut -d':' -f2 | sed -e 's/^[[:space:]]*//' | cut -d' ' -f2)
+RUBY_PATH=$(passenger-config about ruby-command \
+| grep Nginx \
+| cut -d':' -f2 \
+| sed -e 's/^[[:space:]]*//' \
+| cut -d' ' -f2)
 
 # Set up virtual host
 ROOT_PATH=/var/www/$APP_NAME/$APP_NAME/public
@@ -55,13 +59,15 @@ server {
   # Turn on Passenger
   passenger_enabled on;
   passenger_ruby $RUBY_PATH;
-  ruby_env development;
+  rails_env development;
 }
 EOF
-sudo ln -s /etc/nginx/sites-available/$APP_NAME.conf /etc/nginx/sites-enabled/$APP_NAME.conf
+sudo ln -s \
+/etc/nginx/sites-available/$APP_NAME.conf \
+/etc/nginx/sites-enabled/$APP_NAME.conf
 
 # Restart Nginx
 sudo service nginx restart
 
 # Test to see if it worked
-curl http://$SERVER
+#curl http://$SERVER
