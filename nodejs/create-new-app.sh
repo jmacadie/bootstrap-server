@@ -132,7 +132,7 @@ server {
   # Turn on Passenger
   passenger_enabled on;
   passenger_app_type node;
-  passenger_startup_file app.js;
+  passenger_startup_file $APP_NAME.js;
 }
 EOF
 sudo ln -s \
