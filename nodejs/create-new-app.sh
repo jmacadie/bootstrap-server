@@ -24,6 +24,7 @@ sudo sh -c "cp -rf $HOME/.vimrc ~$APP_NAME/.vimrc"
 
 # Create a shell folder for the project
 sudo mkdir -p /var/www/$APP_NAME
+chown -R $USER: /var/www/$APP_NAME
 cd /var/www/$APP_NAME
 mkdir site
 cd site
@@ -115,7 +116,7 @@ echo "404 - Not Found" >> views/404.handlebars
 echo "500 - Server Error" >> views/500.handlebars
 
 # Chnage the folder permissions
-sudo sh -c "chown -R $APP_NAME: /var/www/$APP_NAME"
+chown -R $APP_NAME: /var/www/$APP_NAME
 
 # Set up virtual host
 ROOT_PATH=/var/www/$APP_NAME/site/public
