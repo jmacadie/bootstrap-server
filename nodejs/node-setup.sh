@@ -7,6 +7,9 @@ sudo apt-get install -y curl apt-transport-https ca-certificates &&
   sudo bash setup-nodejs &&
   sudo apt-get install -y nodejs build-essential
 
+# Clean up
+rm setup-nodejs
+
 # Install Phusion PGP key and add HTTPS support for APT
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
 

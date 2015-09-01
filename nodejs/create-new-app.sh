@@ -24,7 +24,7 @@ sudo sh -c "cp -rf $HOME/.vimrc ~$APP_NAME/.vimrc"
 
 # Create a shell folder for the project
 sudo mkdir -p /var/www/$APP_NAME
-chown -R $USER: /var/www/$APP_NAME
+sudo sh -c "chown -R $USER: /var/www/$APP_NAME"
 cd /var/www/$APP_NAME
 mkdir site
 cd site
