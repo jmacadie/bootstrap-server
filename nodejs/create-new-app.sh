@@ -41,9 +41,10 @@ mkdir public/qa
 mkdir public/vendor
 mkdir lib
 touch credentials.js
+touch $APP_NAME.js
 
 # Create a .gitignore
-cat <<EOF .gitignore
+cat <<EOF > .gitignore
 # Ignore packages installed by npm
 node_modules*
 
@@ -63,7 +64,7 @@ npm install --save express
 npm install --save express-handlebars
 
 # Write a very basic app.js main file
-cat <<EOF app.js
+cat <<EOF >> $APP_NAME.js
 var express = require('express');
 var app = express();
 
@@ -99,7 +100,7 @@ app.listen(app.get('port'), function(){
 EOF
 
 # Write a basic layout file
-cat <<EOF views/layouts/main.handlebars
+cat <<EOF > views/layouts/main.handlebars
 <!doctype html>
 <head>
   <title>$APP_NAME</title>
@@ -111,12 +112,12 @@ cat <<EOF views/layouts/main.handlebars
 EOF
 
 # Write some basic views
-echo "Hello, World!" >> views/home.handlebars
-echo "404 - Not Found" >> views/404.handlebars
-echo "500 - Server Error" >> views/500.handlebars
+echo "Hello, World!" > views/home.handlebars
+echo "404 - Not Found" > views/404.handlebars
+echo "500 - Server Error" > views/500.handlebars
 
 # Chnage the folder permissions
-chown -R $APP_NAME: /var/www/$APP_NAME
+sudo sh -c "chown -R $APP_NAME: /var/www/$APP_NAME"
 
 # Set up virtual host
 ROOT_PATH=/var/www/$APP_NAME/site/public
