@@ -116,7 +116,7 @@ echo "Hello, World!" > views/home.handlebars
 echo "404 - Not Found" > views/404.handlebars
 echo "500 - Server Error" > views/500.handlebars
 
-# Chnage the folder permissions
+# Change the folder permissions
 sudo sh -c "chown -R $APP_NAME: /var/www/$APP_NAME"
 
 # Set up virtual host
