@@ -62,6 +62,7 @@ server {
   passenger_enabled on;
   passenger_app_type node;
   passenger_startup_file $APP_PATH;
+  passenger_app_env development;
 }
 EOF
 sudo ln -s \
