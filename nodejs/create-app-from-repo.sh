@@ -35,6 +35,10 @@ cd /var/www/$APP_NAME
 # Clone the repo
 git clone $REPO site
 
+# Install the dependencies
+cd site
+npm install
+
 # Change the folder permissions
 sudo sh -c "chown -R $APP_NAME: /var/www/$APP_NAME"
 
