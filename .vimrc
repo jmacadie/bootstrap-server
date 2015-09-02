@@ -36,6 +36,7 @@ highlight colorcolumn ctermbg=6 guibg=#2c2d27
 set autoindent
 set smartindent
 highlight Comment ctermfg=2
+au BufNewFile,BufRead *.handlebars set filetype=html
 
 " Folding
 set foldmethod=indent

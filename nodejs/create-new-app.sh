@@ -21,6 +21,8 @@ sudo sh -c "chmod 600 ~$APP_NAME/.ssh/*"
 sudo sh -c "cp -rf $HOME/.bash/ ~$APP_NAME/.bash/"
 sudo sh -c "cp -rf $HOME/.bashrc ~$APP_NAME/.bashrc"
 sudo sh -c "cp -rf $HOME/.vimrc ~$APP_NAME/.vimrc"
+sudo sh -c "cp -rf $HOME/.gitconfig ~$APP_NAME/.gitconfig"
+sudo sh -c "chown -R $APP_NAME: ~$APP_NAME"
 
 # Create a shell folder for the project
 sudo mkdir -p /var/www/$APP_NAME
