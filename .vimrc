@@ -1,4 +1,64 @@
+" Refs
+" http://oli.me.uk/2015/06/17/wrangling-javascript-with-vim/
+
+" Vundle options
+" ~~~~~~~~~~~~~~~~
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'pangloss/vim-javascript'
+Plugin 'townk/vim-autoclose'
+Plugin 'edsono/vim-matchit'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'scrooloose/syntastic'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
 set number
+
+" vim-gitgutter options
+" ~~~~~~~~~~~~~~~~
+
+let g:gitgutter_realtime = 1
+set updatetime=750
+
+" syntastic option
+" ~~~~~~~~~~~~~~~~
+
+set statusline+=%#warnings#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_aggregate_errors = 1
+
+let g:syntastic_js_checkers = ['jshint', 'jscs']
+let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 
 " Tabs options
 " ~~~~~~~~~~~~~~~~
@@ -37,6 +97,12 @@ set autoindent
 set smartindent
 highlight Comment ctermfg=2
 au BufNewFile,BufRead *.handlebars set filetype=html
+autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+
+" HTML
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"inoremap <F8> </<C-X><C-O>
+autocmd FileType html,xml source ~/.vim/scripts/closetag.vim
 
 " Folding
 set foldmethod=indent
