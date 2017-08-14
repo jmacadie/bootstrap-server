@@ -8,8 +8,8 @@ git config --global user.email "james@macadie.co.uk"
 
 git config --global core.editor "vim"
 
-git config --global alias.lol "log --pretty=oneline --abbrev-commit --graph
---decorate"
+git config --global alias.lol "log --graph --decorate"
+git config --global alias.lols "log --oneline --graph --decorate"
 git config --global alias.logs "log --stat"
 git config --global alias.co "checkout"
 git config --global alias.br "branch"
@@ -17,8 +17,16 @@ git config --global alias.ci "commit"
 git config --global alias.st "status"
 git config --global alias.unstage "reset HEAD --"
 git config --global alias.last "log -1 HEAD"
-git config --global alias.df "diff"
-git config --global alias.dfs "diff --cached"
+git config --global alias.df "difftool"
+git config --global alias.dfs "difftool --cached"
+git config --global alias.dfn "diff --name-only"
+git config --global alias,dfus "!f() { \
+					git difftool $1:./ -- $2; \
+				}; f"
+git config --global alias.pom "push origin master"
+
+git config --global difftool.prompt "false"
+git config --global difftool.trustExitCode "true"
 
 # Set up SSH connection
 # https://help.github.com/articles/generating-ssh-keys/#platform-linux
