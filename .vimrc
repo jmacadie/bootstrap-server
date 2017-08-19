@@ -1,5 +1,6 @@
 " Refs
 " http://oli.me.uk/2015/06/17/wrangling-javascript-with-vim/
+" https://github.com/VundleVim/Vundle.vim
 
 " Vundle options
 " ~~~~~~~~~~~~~~~~
@@ -17,7 +18,6 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'pangloss/vim-javascript'
 Plugin 'townk/vim-autoclose'
-Plugin 'edsono/vim-matchit'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/syntastic'
 
