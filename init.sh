@@ -10,6 +10,7 @@ apt-get update
 apt-get upgrade
 
 # Set timezone
+apt-get install ncurses-term # needed for putty term settings
 dpkg-reconfigure tzdata
 
 # Install sudo
@@ -37,7 +38,7 @@ su - X
 
 # Create SHH directory
 mkdir .ssh
-chmod 700 .shh
+chmod 700 .ssh
 
 # Create keys file
 vim .ssh/authorized_keys
