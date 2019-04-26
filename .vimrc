@@ -1,3 +1,6 @@
+set number        " show line numbers
+syntax on		  " syntax highlighting for code please
+
 " Refs
 " http://oli.me.uk/2015/06/17/wrangling-javascript-with-vim/
 " https://github.com/VundleVim/Vundle.vim
@@ -36,15 +39,13 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-set number
-
 " vim-gitgutter options
 " ~~~~~~~~~~~~~~~~
 
 let g:gitgutter_realtime = 1
 set updatetime=750
 
-" syntastic option
+" Syntastic Options
 " ~~~~~~~~~~~~~~~~
 
 set statusline+=%#warnings#
@@ -60,14 +61,20 @@ let g:syntastic_aggregate_errors = 1
 let g:syntastic_js_checkers = ['jshint', 'jscs']
 let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 
+" Indenting Options
+" ~~~~~~~~~~~~~~~~
+
+set autoindent
+set smartindent
+
 " Tabs options
 " ~~~~~~~~~~~~~~~~
-set tabstop=2 " How to display tabs
-set softtabstop=2 " How many columns inserted when hit tab in INSERT mode
-set shiftwidth=2 " How many columns moved when indent or un-indent
-set expandtab " Always insert spaces not tabs
+set tabstop=2       " How to display tabs
+set softtabstop=2   " How many columns inserted when hit tab in INSERT mode
+set shiftwidth=2    " How many columns moved when indent or un-indent
+set expandtab       " Always insert spaces not tabs
 
-" Show tabs
+" Show tabs and trailing whitespace
 " ~~~~~~~~~~~~~~~~
 set list
 set listchars=tab:!_,precedes:<,extends:>,trail:-
@@ -84,17 +91,37 @@ endfun
 autocmd FileType c,cpp,java,php,ruby,pyhton,html
   \ autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-" Code stuff
+" Toggle spelling on & off
 " ~~~~~~~~~~~~~~~~
+function! ToggleSpelling()
+  if &spell
+    set nospell
+  else
+    setlocal spell spelllang=en_gb
+  endif
+endfunction
 
-syntax on
-set textwidth=80
-set wrapmargin=2
-set nowrap
-execute "set colorcolumn=" . join(range(81,355), ',')
-highlight colorcolumn ctermbg=6 guibg=#2c2d27
-set autoindent
-set smartindent
+nmap <silent> gs :call ToggleSpelling()<CR>
+
+" Toggle paste mode on & off
+" ~~~~~~~~~~~~~~~~
+function! TogglePaste()
+  if &paste
+    set nopaste
+  else
+    set paste
+    startinsert
+  endif
+endfunction
+
+nmap <silent> gp :call TogglePaste()<CR>
+
+" Highlighting
+" ~~~~~~~~~~~~~~~~
+" Set visual clue to end of recommended range
+execute "set colorcolumn=80," . join(range(120,355), ',')
+highlight ColorColumn ctermbg=4
+
 highlight Comment ctermfg=2
 au BufNewFile,BufRead *.handlebars set filetype=html
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
@@ -105,6 +132,7 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType html,xml source ~/.vim/scripts/closetag.vim
 
 " Folding
+" ~~~~~~~~~~~~~~~~
 set foldmethod=indent
 set foldnestmax=10
 set nofoldenable
@@ -113,3 +141,31 @@ set foldlevel=1
 " Git commits
 " ~~~~~~~~~~~~~~~~
 autocmd FileType gitcommit setlocal spell
+
+" Status Line
+" ~~~~~~~~~~~~~~~~
+set laststatus=2		" always show a status line
+
+function! GitBranch()
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+endfunction
+
+function! StatuslineGit()
+  let l:branchname = GitBranch()
+  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+endfunction
+
+set statusline=
+set statusline+=%#PmenuSel#
+"set statusline+=%{StatuslineGit()}
+set statusline+=%#LineNr#
+set statusline+=\ %f
+set statusline+=%m\
+set statusline+=%=
+set statusline+=%#CursorColumn#
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %p%%
+set statusline+=\ %l:%c
+set statusline+=\ 
