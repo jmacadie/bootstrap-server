@@ -25,7 +25,7 @@ apt-get install vim git
 
 # Create user
 adduser X
-# Will be prompted to porvide password and important details like room number
+# Will be prompted to provide password and important details like room number
 
 # Add user to sudoers
 usermod -aG sudo X
