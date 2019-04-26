@@ -8,6 +8,11 @@ git config --global user.email "james@macadie.co.uk"
 
 git config --global core.editor "vim"
 
+git config --global color.status "auto"
+git config --global color.branch "auto"
+
+git config --global push.default "simple"
+
 git config --global alias.lol "log --graph --decorate"
 git config --global alias.lols "log --oneline --graph --decorate"
 git config --global alias.logs "log --stat"
@@ -24,7 +29,10 @@ git config --global alias,dfus "!f() { \
 					git difftool $1:./ -- $2; \
 				}; f"
 git config --global alias.pom "push origin master"
+git config --global alias.pl "pull origin master"
 
+git config --global diff.tool "vimdiff"
+git config --global merge.tool "vimdiff"
 git config --global difftool.prompt "false"
 git config --global difftool.trustExitCode "true"
 
