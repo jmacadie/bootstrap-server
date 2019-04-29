@@ -123,13 +123,14 @@ execute "set colorcolumn=80," . join(range(120,355), ',')
 highlight ColorColumn ctermbg=4
 
 highlight Comment ctermfg=2
-au BufNewFile,BufRead *.handlebars set filetype=html
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " HTML
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+" ~~~~~~~~~~~~~~~~
+"au BufNewFile,BufRead *.handlebars set filetype=html
+"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 "inoremap <F8> </<C-X><C-O>
-autocmd FileType html,xml source ~/.vim/scripts/closetag.vim
+"autocmd FileType html,xml source ~/.vim/scripts/closetag.vim
 
 " Folding
 " ~~~~~~~~~~~~~~~~
