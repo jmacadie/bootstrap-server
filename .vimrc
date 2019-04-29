@@ -170,3 +170,11 @@ set statusline+=\[%{&fileformat}\]
 set statusline+=\ %p%%
 set statusline+=\ %l:%c
 set statusline+=\ 
+
+" Other
+" ~~~~~~~~~~~~~~~~
+" vim commands cheat sheet
+nmap <silent> gc :vsp ~/cheatsheet.txt<CR>
+" Change how splits open
+set splitbelow
+set splitright
