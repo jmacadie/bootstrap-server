@@ -11,21 +11,21 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'pangloss/vim-javascript'
-Plugin 'townk/vim-autoclose'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'scrooloose/syntastic'
+" Plugin 'pangloss/vim-javascript'
+" Plugin 'townk/vim-autoclose'
+" Plugin 'airblade/vim-gitgutter'
+" Plugin 'scrooloose/syntastic'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+" call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -48,9 +48,9 @@ set updatetime=750
 " Syntastic Options
 " ~~~~~~~~~~~~~~~~
 
-set statusline+=%#warnings#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warnings#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
