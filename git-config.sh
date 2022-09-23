@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Set global params
 # -------------------------------------
@@ -25,12 +25,11 @@ git config --global alias.last "log -1 HEAD"
 git config --global alias.df "difftool"
 git config --global alias.dfs "difftool --cached"
 git config --global alias.dfn "diff --name-only"
-git config --global alias,dfus "!f() { \
-					git difftool $1:./ -- $2; \
-				}; f"
-git config --global alias.pom "push origin master"
-git config --global alias.pl "pull origin master"
+git config --global alias,dfus "!f() { git difftool $1:./ -- $2; }; f"
+git config --global alias.pom "push origin main"
+git config --global alias.pl "pull origin main"
 
+git config --global diff.algorithm histogram
 git config --global diff.tool "vimdiff"
 git config --global merge.tool "vimdiff"
 git config --global difftool.prompt "false"
@@ -45,17 +44,17 @@ git config --global difftool.trustExitCode "true"
 # If already have a key then can skip generating a new key below
 
 # Generate new SSH key
-ssh-keygen -t rsa -b 4096 -C "james@macadie.co.uk"
+ssh-keygen -t ed25519 -C "james@macadie.co.uk"
 
 # Add key to agent
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/is_rsa
+ssh-add ~/.ssh/id_ed25519
 
 # Add key to github account
 echo "1) Copy text of following file"
-echo -e "/n - - - - - /n"
-cat ~/.ssh/id_rsa.pub
-echo -e "/n - - - - - /n"
+echo -e "\n- - - - - - -\n"
+cat ~/.ssh/id_ed25519.pub
+echo -e "\n- - - - - - -\n"
 echo "2) Go to http://github.com
 3) Go to Settings > SSH Keys
 4) Click Add SSH Key
@@ -64,7 +63,7 @@ echo "2) Go to http://github.com
 7) Click Add Key"
 echo -n "Press any key when done ..."
 read -s response
-echo -e "/n"
+echo -e "\n"
 
 # Test connection
 ssh -T git@github.com

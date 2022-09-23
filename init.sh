@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# Create a new debian server on [Digital Ocean]
+# Create a new Ubuntu server on [Digital Ocean]
+# This was done on Ubuntu 22.04
 
 # Log in as root (if used a SSH key during creation then obviously will need to
 # use that)
@@ -10,14 +11,14 @@ apt-get update
 apt-get upgrade
 
 # Set timezone
-apt-get install ncurses-term # needed for putty term settings
+#apt-get install ncurses-term # needed for putty term settings
 dpkg-reconfigure tzdata
 
 # Install sudo
-apt-get install sudo
+#apt-get install sudo
 
 # Install vim and git
-apt-get install vim git
+#apt-get install vim git
 
 # Sort out access
 # https://www.digitalocean.com/community/tutorials/initial-server-setup-with-debian-8
@@ -42,7 +43,7 @@ chmod 700 .ssh
 
 # Create keys file
 vim .ssh/authorized_keys
-# paste in public key - will start with "ssh-rsa AAAA..."
+# paste in public key - will start with "ecdsa-sha2...."
 chmod 600 .ssh/authorized_keys
 
 # Back to root
@@ -64,7 +65,7 @@ vim /etc/ssh/sshd_config
 #   -> UsePAM no
 
 # Restart SSH
-systemctl restart ssh
+service ssh restart
 
 # Log-off current session
 logout

@@ -142,6 +142,7 @@ set foldlevel=1
 " Git commits
 " ~~~~~~~~~~~~~~~~
 autocmd FileType gitcommit setlocal spell
+set diffopt+=internal,algorithm:patience
 
 " Status Line
 " ~~~~~~~~~~~~~~~~
