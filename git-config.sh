@@ -25,7 +25,7 @@ git config --global alias.last "log -1 HEAD"
 git config --global alias.df "difftool"
 git config --global alias.dfs "difftool --cached"
 git config --global alias.dfn "diff --name-only"
-git config --global alias,dfus "!f() { git difftool $1:./ -- $2; }; f"
+git config --global alias.dfus "!f() { git difftool $1:./ -- $2; }; f"
 git config --global alias.pom "push origin main"
 git config --global alias.pl "pull origin main"
 
@@ -51,10 +51,11 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 
 # Add key to github account
+echo -e "\n"
 echo "1) Copy text of following file"
-echo -e "\n- - - - - - -\n"
+echo -e "\n- - - - - - -"
 cat ~/.ssh/id_ed25519.pub
-echo -e "\n- - - - - - -\n"
+echo -e "- - - - - - -\n"
 echo "2) Go to http://github.com
 3) Go to Settings > SSH Keys
 4) Click Add SSH Key

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Create a new Ubuntu server on [Digital Ocean]
 # This was done on Ubuntu 22.04
@@ -7,8 +7,7 @@
 # use that)
 
 # Update everything
-apt-get update
-apt-get upgrade
+apt update && apt upgrade
 
 # Set timezone
 #apt-get install ncurses-term # needed for putty term settings
@@ -37,9 +36,8 @@ usermod -aG sudo X
 # Switch to user
 su - X
 
-# Create SHH directory
-mkdir .ssh
-chmod 700 .ssh
+# Create SSH directory
+mkdir .ssh; chmod 700 .ssh
 
 # Create keys file
 vim .ssh/authorized_keys
@@ -76,8 +74,7 @@ logout
 # Sort out git
 # ==============================================================================
 
-mkdir ~/code
-cd ~/code
+mkdir ~/code && cd ~/code
 
 # Clone this repo
 # Have to use https as not set up SSH yet
