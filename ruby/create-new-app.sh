@@ -19,16 +19,23 @@ sudo mkdir -p $ROOT_PATH/var/log
 
 # Set up puma config for this app
 sudo tee $ROOT_PATH/puma.rb >/dev/null <<EOF
+ENV['APP_ENV'] = 'production'
+
+#ruby -e "require 'sysrandom/securerandom'; puts SecureRandom.hex(64)"
+ENV['SESSION_SECRET'] = '<REPLACE_ME>'
+
 threads 1, 6
-workers 1
+# I'm too tight to pay for any more than a single-core server
+# so run puma in single user mode
+workers 0
 
 root = "#{Dir.getwd}"
 
 bind "unix://#{root}/var/run/puma.sock"
 
-stdout_redirect "#{root}/var/log/puma.stdout.log", "#{root}/var/log/puma.stderr.log", true
-#stderr_path "#{root}/var/log/puma.stderr.log"
-#stdout_path "#{root}/var/log/puma.stdout.log"
+#stdout_redirect "#{root}/var/log/puma.stdout.log", "#{root}/var/log/puma.stderr.log", true
+stderr_path "#{root}/var/log/puma.stderr.log"
+stdout_path "#{root}/var/log/puma.stdout.log"
 
 pidfile "#{root}/var/run/puma.pid"
 state_path "#{root}/var/run/state"
@@ -68,6 +75,13 @@ gem 'puma'
 gem 'sinatra'
 EOF
 
+# Set bundle config to only install production gems
+sudo mkdir -p $ROOT_PATH/.bundle
+sudo tee $ROOT_PATH/.bundle/config >/dev/null <<EOF
+---
+BUNDLE_WITHOUT: "development:test"
+EOF
+
 # Set the ownership of the app folder
 sudo sh -c "chown -R www-data: $ROOT_PATH"
 
@@ -99,6 +113,10 @@ sudo ln -s \
 
 # Add app to puma conf file
 sudo sh -c "echo $ROOT_PATH >> /etc/puma/puma.conf"
+
+# Create database role & blank database for the app
+sudo -u postgres createuser $APP_NAME
+sudo -u postgres createdb $APP_NAME
 
 # Restart Nginx & Puma
 sudo service puma-manager restart

@@ -20,16 +20,18 @@ for i in `cat $PUMA_CONF`; do
   app=`echo $i | cut -d , -f 1`
   logger -t "puma-manager" "Starting $app"
   cd $app
-  exec bundle exec puma -e production --config puma.rb
+  exec bundle exec puma -e deployment --config puma.rb
 done
 EOF
 
 # Set up systemd service to call script
 sudo tee /etc/systemd/system/puma-manager.service > /dev/null <<'EOF'
 [Unit]
+Description=Puma HTTP Server
 After=network.target
 
 [Service]
+User=www-data
 ExecStart=/usr/local/bin/puma-manager.sh
 
 [Install]
@@ -43,4 +45,8 @@ sudo chmod 664 /etc/systemd/system/puma-manager.service
 # Reload systemd
 sudo systemctl daemon-reload
 sudo systemctl enable puma-manager.service
+
+# Check service status
+# sudo systemctl status puma-manager.service
+# sudo journalctl -u puma-manager.service
 
