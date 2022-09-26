@@ -33,9 +33,7 @@ root = "#{Dir.getwd}"
 
 bind "unix://#{root}/var/run/puma.sock"
 
-#stdout_redirect "#{root}/var/log/puma.stdout.log", "#{root}/var/log/puma.stderr.log", true
-stderr_path "#{root}/var/log/puma.stderr.log"
-stdout_path "#{root}/var/log/puma.stdout.log"
+stdout_redirect "#{root}/var/log/puma.stdout.log", "#{root}/var/log/puma.stderr.log", true
 
 pidfile "#{root}/var/run/puma.pid"
 state_path "#{root}/var/run/state"
