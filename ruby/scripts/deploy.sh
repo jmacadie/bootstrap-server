@@ -2,7 +2,8 @@
 
 ROOT_PATH=$1
 APP_NAME=$2
-
+staging=$3
+source_app=$4
 
 # Set up a deploy script
 sudo tee $ROOT_PATH/deploy.sh >/dev/null <<EOF
@@ -46,8 +47,22 @@ sudo chown www-data: \$ROOT_PATH/current
 # Install any changed gems
 cd $ROOT_PATH/current
 sudo su -s /bin/bash -c 'exec bundle exec install' www-data
+EOF
 
-# Restart puma
+if [[ $staging == 'true' ]]; then
+
+sudo tee -a $ROOT_PATH/deploy.sh >/dev/null <<EOF
+
+psql -c "DROP DATABASE IF EXISTS $APP_NAME;"
+psql -c "DROP USER IF EXISTS $APP_NAME;"
+pg_dump $source_app | psql $APP_NAME
+EOF
+
+fi
+
+sudo tee -a $ROOT_PATH/deploy.sh >/dev/null <<EOF
+
+# Restart Puma
 sudo service puma-$APP_NAME restart
 EOF
 

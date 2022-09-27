@@ -1,5 +1,18 @@
 #!/bin/bash
 
+staging=''
+source_app=''
+while getopts 's:' flag; do
+  case "${flag}" in
+    s)
+      staging='true'
+      shift
+      source_app="${OPTARG}"
+      shift
+      ;;
+  esac
+done
+
 APP_NAME=$1
 SERVER=$2
 REPO=$3
@@ -12,7 +25,7 @@ APP_PATH=$ROOT_PATH/releases/$DATE_STAMP
 cd "${0%/*}"
 
 ./folders.sh $ROOT_PATH $APP_PATH
-./deploy.sh $ROOT_PATH $APP_PATH
+./deploy.sh $ROOT_PATH $APP_NAME $staging $source_app
 ./puma_config.sh $ROOT_PATH $APP_PATH
 ./shell_app.sh $APP_PATH
 
