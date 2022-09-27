@@ -45,6 +45,7 @@ sudo cp -r public/ \$APP_PATH/public/
 sudo cp Gemfile \$APP_PATH/Gemfile
 sudo cp config.ru \$APP_PATH/config.ru
 sudo cp \$ROOT_PATH/current/puma.rb \$APP_PATH/puma.rb
+sudo cp -r \$ROOT_PATH/current/.bundle/ \$APP_PATH/.bundle
 
 echo -n "Retain current server config files? (y/n) "
 read RES
@@ -62,8 +63,12 @@ sudo rm -f \$ROOT_PATH/current
 sudo ln -s \$APP_PATH \$ROOT_PATH/current
 sudo chown www-data: \$ROOT_PATH/current
 
+# Install any changed gems
+cd $ROOT_PATH/current
+sudo su -s /bin/bash -c 'exec bundle exec install' www-data
+
 # Restart puma
-sudo service puma-manager restart
+sudo service puma-$APP_NAME restart
 EOF
 sudo sh -c "chmod 777 $ROOT_PATH/deploy.sh"
 
@@ -90,6 +95,11 @@ state_path "#{root}/var/run/state"
 
 rackup "#{Dir.getwd}/config.ru"
 EOF
+
+# Warn about session secret
+echo -e "\n*****************************************************"
+echo "You need to replace the session secret in $APP_PATH/puma.rb"
+echo -e "*****************************************************\n"
 
 # Set up rackup config for this app
 sudo tee $APP_PATH/config.ru >/dev/null <<EOF
@@ -165,12 +175,65 @@ sudo ln -s \
 /etc/nginx/sites-available/$APP_NAME.conf \
 /etc/nginx/sites-enabled/$APP_NAME.conf
 
-# Add app to puma conf file
-sudo sh -c "echo $ROOT_PATH/current >> /etc/puma/puma.conf"
+# Set up systemd job to run puma server for this app
+sudo tee /etc/systemd/system/puma-$APP_NAME.service >/dev/null <<EOF
+[Unit]
+Description=Puma HTTP Server
+After=network.target
+
+# Uncomment for socket activation (see below)
+# Requires=puma.socket
+
+[Service]
+# Puma supports systemd's \`Type=notify\` and watchdog service
+# monitoring, if the [sd_notify](https://github.com/agis/ruby-sdnotify) gem is installed,
+# as of Puma 5.1 or later.
+# On earlier versions of Puma or JRuby, change this to \`Type=simple\` and remove
+# the \`WatchdogSec\` line.
+Type=notify
+
+# If your Puma process locks up, systemd's watchdog will restart it within seconds.
+WatchdogSec=10
+
+# Preferably configure a non-privileged user
+User=www-data
+
+# The path to your application code root directory.
+WorkingDirectory=$ROOT_PATH/current
+
+# Helpful for debugging socket activation, etc.
+# Environment=PUMA_DEBUG=1
+
+# SystemD will not run puma even if it is in your path. You must specify
+# an absolute URL to puma. For example /usr/local/bin/puma
+# Alternatively, create a binstub with \`bundle binstubs puma --path ./sbin\` in the WorkingDirectory
+ExecStart=/usr/local/bin/puma --environment deployment --config $ROOT_PATH/current/puma.rb
+
+# Variant: Rails start.
+# ExecStart=/<FULLPATH>/bin/puma -C <YOUR_APP_PATH>/config/puma.rb ../config.ru
+
+# Variant: Use \`bundle exec --keep-file-descriptors puma\` instead of binstub
+# Variant: Specify directives inline.
+# ExecStart=/<FULLPATH>/puma -b tcp://0.0.0.0:9292 -b ssl://0.0.0.0:9293?key=key.pem&cert=cert.pem
+
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd
+sudo systemctl daemon-reload
+sudo systemctl enable puma-$APP_NAME.service
 
 # Restart Nginx & Puma
-sudo service puma-manager restart
+sudo service puma-$APP_NAME start
 sudo service nginx restart
+
+# Check service status
+# sudo systemctl status puma-x.service
+# sudo journalctl -xeu puma-x.service
 
 # Run certbot to make sure we're providing https
 sudo certbot
@@ -181,10 +244,12 @@ createuser $APP_NAME
 createdb $APP_NAME -O $APP_NAME
 psql -d $APP_NAME -c "GRANT pg_read_all_data, pg_write_all_data TO $APP_NAME;"
 
+echo -e "\n*****************************************************"
 echo "Now add a password for the app database:"
 echo "1) Start interactive postrgres shell: '$ psql'"
 echo -e "2) Type: '\\password $APP_NAME'"
 echo "3) Record the password in your app settings e.g. config/database.yml"
+echo -e "*****************************************************\n"
 
 # Say bye
 echo "All Done!"
