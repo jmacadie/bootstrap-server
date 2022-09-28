@@ -14,6 +14,25 @@ read REPO
 
 scripts/add_app.sh $APP_NAME $SERVER $REPO
 
+echo -n "Create a staging app? (y/n)  > "
+read STG
+
+if [[ $STG == "y" ]]; then
+  echo -n "  Provide a staging app name (${APP_NAME}_stg) > "
+  read STG_NAME
+  if [[ -z $STG_NAME ]]; then
+  STG_NAME="${APP_NAME}_stg"
+  fi
+
+  echo -n "  Provide a server name (staging.${SERVER}) > "
+  read STG_SERVER
+  if [[ -z $STG_SERVER ]]; then
+    STG_SERVER="staging.${SERVER}"
+  fi
+
+  scripts/add_app.sh -s $APP_NAME $STG_NAME $STG_SERVER $REPO
+fi
+
 # Run certbot to make sure we're providing https
 sudo certbot
 
