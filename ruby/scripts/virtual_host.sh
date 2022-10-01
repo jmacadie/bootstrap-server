@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Creating virtual host for the app..."
+
 ROOT_PATH=$1
 APP_NAME=$2
 SERVER=$3

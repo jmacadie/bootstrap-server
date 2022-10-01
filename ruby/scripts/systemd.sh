@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Creating systemd service for puma app instance..."
+
 ROOT_PATH=$1
 APP_NAME=$2
 
@@ -51,14 +53,13 @@ WantedBy=multi-user.target
 EOF
 
 # Reload systemd
-sudo systemctl daemon-reload
-sudo systemctl enable puma-$APP_NAME.service
+sudo systemctl daemon-reload >/dev/null
+sudo systemctl enable puma-$APP_NAME.service &>/dev/null
 
 # Restart Nginx & Puma
-sudo service puma-$APP_NAME start
-sudo service nginx restart
+sudo service puma-$APP_NAME start >/dev/null
+sudo service nginx restart >/dev/null
 
 # Check service status
 # sudo systemctl status puma-x.service
 # sudo journalctl -xeu puma-x.service
-

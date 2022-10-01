@@ -1,9 +1,11 @@
 #! /bin/bash
 
+echo "Adding deployment script for the app..."
+
 ROOT_PATH=$1
 APP_NAME=$2
-staging=$3
-source_app=$4
+S=$3
+S_APP=$4
 
 # Set up a deploy script
 sudo tee $ROOT_PATH/deploy.sh >/dev/null <<EOF
@@ -46,18 +48,18 @@ sudo chown www-data: \$ROOT_PATH/current
 
 # Install any changed gems
 cd $ROOT_PATH/current
-sudo su -s /bin/bash -c 'exec bundle exec install' www-data
+sudo bundle install
+sudo chown www-data: Gemfile.lock
 EOF
 
-if [[ $staging == 'true' ]]; then
-
+if [[ $S == 'true' ]]; then
 sudo tee -a $ROOT_PATH/deploy.sh >/dev/null <<EOF
 
-psql -c "DROP DATABASE IF EXISTS $APP_NAME;"
-psql -c "DROP USER IF EXISTS $APP_NAME;"
-pg_dump $source_app | psql $APP_NAME
+# Clone main DB back to staging DB
+psql -c "DROP DATABASE IF EXISTS $APP_NAME;" >/dev/null
+psql -c "CREATE DATABASE $APP_NAME;" >/dev/null
+pg_dump $S_APP | psql $APP_NAME >/dev/nul
 EOF
-
 fi
 
 sudo tee -a $ROOT_PATH/deploy.sh >/dev/null <<EOF
@@ -67,4 +69,4 @@ sudo service puma-$APP_NAME restart
 EOF
 
 # Make script executable by anyone
-sudo sh -c "chmod 777 $ROOT_PATH/deploy.sh"
+sudo chmod 777 $ROOT_PATH/deploy.sh

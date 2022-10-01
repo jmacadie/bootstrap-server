@@ -1,13 +1,13 @@
 #!/bin/bash
 
-staging=''
-source_app=''
-while getopts 's:' flag; do
-  case "${flag}" in
+S=''
+S_APP=''
+while getopts 's:' FLAG; do
+  case "${FLAG}" in
     s)
-      staging='true'
+      S='true'
       shift
-      source_app="${OPTARG}"
+      S_APP="${OPTARG}"
       shift
       ;;
   esac
@@ -25,8 +25,8 @@ APP_PATH=$ROOT_PATH/releases/$DATE_STAMP
 cd "${0%/*}"
 
 ./folders.sh $ROOT_PATH $APP_PATH
-./deploy.sh $ROOT_PATH $APP_NAME $staging $source_app
-./puma_config.sh $ROOT_PATH $APP_PATH
+./deploy.sh $ROOT_PATH $APP_NAME $S $S_APP
+./puma_config.sh $ROOT_PATH $APP_PATH $S
 ./shell_app.sh $APP_PATH
 
 # Create a symlink to point the current release at
@@ -34,7 +34,7 @@ cd "${0%/*}"
 sudo ln -s $APP_PATH $ROOT_PATH/current
 
 # Set the ownership of the app folder
-sudo sh -c "chown -R www-data: $ROOT_PATH"
+sudo chown -R www-data: $ROOT_PATH
 
 ./repo.sh $ROOT_PATH $REPO
 ./virtual_host.sh $ROOT_PATH $APP_NAME $SERVER

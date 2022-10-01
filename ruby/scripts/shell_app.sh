@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Creating shell app (so can test initial configuration)..."
+
 APP_PATH=$1
 
 # Set up rackup config for this app
@@ -8,7 +10,7 @@ require File.expand_path '../myapp.rb', __FILE__
 run MyApp
 EOF
 
-# Set up shell appplication file
+# Set up shell application file
 sudo tee $APP_PATH/myapp.rb >/dev/null <<EOF
 require "rubygems"
 require "sinatra/base"
