@@ -19,8 +19,7 @@ fi
 
 sudo tee -a $APP_PATH/puma.rb >/dev/null <<EOF
 
-#ruby -e "require 'sysrandom/securerandom'; puts SecureRandom.hex(64)"
-ENV['SESSION_SECRET'] = '<REPLACE_ME.................................................PADDING>'
+ENV['SESSION_SECRET'] = '<REPLACE_ME>'
 
 threads 1, 6
 # I'm too tight to pay for any more than a single-core server
@@ -39,7 +38,6 @@ state_path "#{root}/var/run/state"
 rackup "#{root}/current/config.ru"
 EOF
 
-# Warn about session secret
-echo "*****************************************************"
-echo "You need to replace the session secret in $ROOT_PATH/current/puma.rb"
-echo "*****************************************************"
+# Automatically generate a session secret
+SECRET=$(ruby -e "require 'sysrandom/securerandom'; puts SecureRandom.hex(64)")
+sudo sed -i "s/<REPLACE_ME>/$SECRET/g" $APP_PATH/puma.rb
