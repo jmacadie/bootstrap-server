@@ -63,7 +63,7 @@ sudo tee -a $ROOT_PATH/deploy.sh >/dev/null <<EOF
 # Clone main DB back to staging DB
 psql -c "DROP DATABASE IF EXISTS $APP_NAME;" >/dev/null
 psql -c "CREATE DATABASE $APP_NAME;" >/dev/null
-pg_dump $S_APP | psql $APP_NAME >/dev/nul
+pg_dump $S_APP | psql $APP_NAME >/dev/null
 EOF
 fi
 
