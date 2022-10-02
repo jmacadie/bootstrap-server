@@ -1,6 +1,11 @@
 #!/bin/bash
 
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
 echo "Creating database for the app..."
+echo "........"
 
 APP_NAME=$1
 
@@ -14,6 +19,10 @@ createdb $APP_NAME -O $APP_NAME >/dev/null
 psql -d $APP_NAME -c "ALTER USER $APP_NAME WITH PASSWORD '$PWORD';" >/dev/null
 psql -d $APP_NAME -c "GRANT pg_read_all_data, pg_write_all_data TO $APP_NAME;" >/dev/null
 
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
 echo "*****************************************************"
 echo "Record the postgres login in your app settings e.g. config/database.yml"
 echo "User:     $APP_NAME"

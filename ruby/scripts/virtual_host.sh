@@ -1,6 +1,11 @@
 #!/bin/bash
 
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
 echo "Creating virtual host for the app..."
+echo "......"
 
 ROOT_PATH=$1
 APP_NAME=$2

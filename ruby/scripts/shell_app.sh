@@ -1,6 +1,11 @@
 #!/bin/bash
 
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
+printf "\033[1A" # Move cursor one line up
+printf "\033[K"  # Delete to end of line
 echo "Creating shell app (so can test initial configuration)..."
+echo "...."
 
 APP_PATH=$1
 

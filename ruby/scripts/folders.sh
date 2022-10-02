@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Creating folder structure for the app..."
+echo "."
 
 ROOT_PATH=$1
 APP_PATH=$2
