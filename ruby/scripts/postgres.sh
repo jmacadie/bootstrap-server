@@ -11,7 +11,7 @@ PWORD=$(ruby -e "require 'sysrandom/securerandom'; puts SecureRandom.hex(20)")
 # Assumes runner of this script is already setup as a postgres superuser
 createuser $APP_NAME >/dev/null
 createdb $APP_NAME -O $APP_NAME >/dev/null
-psql -d $APP_NAME -c "ALTER USER $APP_NAME WITH PASSWORD '$PWORD';"
+psql -d $APP_NAME -c "ALTER USER $APP_NAME WITH PASSWORD '$PWORD';" >/dev/null
 psql -d $APP_NAME -c "GRANT pg_read_all_data, pg_write_all_data TO $APP_NAME;" >/dev/null
 
 echo "*****************************************************"
