@@ -49,7 +49,7 @@ RND=\$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
 function mask() {
   for fp in \$APP_PATH/public/\$1/*.\$1; do
     f=\${fp##*/}
-    fpn=\${fp%.$1}_\$RND.\$1
+    fpn=\${fp%.\$1}_\$RND.\$1
     fn=\${f%.\$1}_\$RND.\$1
     sudo mv \$fp \$fpn
     grep -Flr \$f \$APP_PATH/src | while read source; do
