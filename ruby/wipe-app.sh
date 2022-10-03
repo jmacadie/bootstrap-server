@@ -49,4 +49,11 @@ read -p "Delete associated database? (y/n) " RES
 if [[ $RES == "y" ]]; then
   psql -c "DROP DATABASE IF EXISTS $APP_NAME;" &>/dev/null
   psql -c "DROP USER IF EXISTS $APP_NAME;" &>/dev/null
+
+  # Delete this apps access from the postgres settings
+  sudo find /etc/postgresql -type f -name "pg_hba.conf" \
+            -exec /bin/bash \
+              -c 'sed -i "/\s$1\s/d" $2' bash $APP_NAME {} \;
+
+  sudo service postgresql restart
 fi

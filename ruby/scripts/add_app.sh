@@ -23,8 +23,8 @@ APP_PATH=$ROOT_PATH/releases/$DATE_STAMP
 
 # Change to this script's folder
 cd "${0%/*}"
+echo -en "\n"
 
-echo -e "\n"
 ./folders.sh $ROOT_PATH $APP_PATH
 ./deploy.sh $ROOT_PATH $APP_NAME $S $S_APP
 ./puma_config.sh $ROOT_PATH $APP_PATH $S

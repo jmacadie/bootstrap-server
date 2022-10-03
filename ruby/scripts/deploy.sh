@@ -43,6 +43,27 @@ else
   sudo cp -r config/ \$APP_PATH/config/
 fi
 
+# Append public file names
+# So old files don't get cached by users
+RND=\$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
+function mask() {
+  for fp in \$APP_PATH/public/\$1/*.\$1; do
+    f=\${fp##*/}
+    fpn=\${fp%.$1}_\$RND.\$1
+    fn=\${f%.\$1}_\$RND.\$1
+    sudo mv \$fp \$fpn
+    grep -Flr \$f \$APP_PATH/src | while read source; do
+      sudo sed -i "s/\$f/\$fn/g" \$source
+    done
+  done
+}
+mask "css"
+mask "js"
+
+# Install any changed gems
+cd \$APP_PATH
+sudo bundle install
+
 # Set ownership
 sudo chown -R www-data: \$APP_PATH
 
@@ -50,11 +71,6 @@ sudo chown -R www-data: \$APP_PATH
 sudo rm -f \$ROOT_PATH/current
 sudo ln -s \$APP_PATH \$ROOT_PATH/current
 sudo chown www-data: \$ROOT_PATH/current
-
-# Install any changed gems
-cd $ROOT_PATH/current
-sudo bundle install
-sudo chown www-data: Gemfile.lock
 EOF
 
 if [[ $S == 'true' ]]; then
@@ -62,7 +78,8 @@ sudo tee -a $ROOT_PATH/deploy.sh >/dev/null <<EOF
 
 # Clone main DB back to staging DB
 psql -c "DROP DATABASE IF EXISTS $APP_NAME;" >/dev/null
-psql -c "CREATE DATABASE $APP_NAME;" >/dev/null
+createdb $APP_NAME -O $APP_NAME >/dev/null
+#psql -d $APP_NAME -c "GRANT pg_read_all_data, pg_write_all_data to $APP_NAME;" >/dev/null
 pg_dump $S_APP | psql $APP_NAME >/dev/null
 EOF
 fi
