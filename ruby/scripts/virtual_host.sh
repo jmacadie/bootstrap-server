@@ -21,8 +21,8 @@ server {
   listen 80;
   server_name $SERVER;
   root $ROOT_PATH/current/public;
-  access_log $ROOT_PATH/var/log/nginx-access.log
-  error_log $ROOT_PATH/var/log/nginx-error.log
+  access_log $ROOT_PATH/var/log/nginx-access.log;
+  error_log $ROOT_PATH/var/log/nginx-error.log;
 
   location / {
     try_files \$uri @app;
