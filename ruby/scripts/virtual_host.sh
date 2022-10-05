@@ -21,6 +21,8 @@ server {
   listen 80;
   server_name $SERVER;
   root $ROOT_PATH/current/public;
+  access_log $ROOT_PATH/var/log/nginx-access.log
+  error_log $ROOT_PATH/var/log/nginx-error.log
 
   location / {
     try_files \$uri @app;
@@ -28,7 +30,8 @@ server {
 
   location @app {
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    proxy_set_header Host \$http_host;
+    proxy_set_header Host \$host;
+    proxy_set_header Origin http://\$host;
     proxy_pass http://puma_$APP_NAME;
   }
 }
