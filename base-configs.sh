@@ -11,3 +11,5 @@ cp -f .vimrc ~/.vimrc
 sudo cp -rf .bash/ ~root/.bash/
 sudo cp -f .bashrc ~root/.bashrc
 sudo cp -f .vimrc ~root/.vimrc
+
+source ~/.bashrc

@@ -59,7 +59,7 @@ echo -e "- - - - - - -\n"
 echo "2) Go to http://github.com
 3) Go to Settings > SSH Keys
 4) Click Add SSH Key
-5) Add a title so can differntiate (preferably this server name)
+5) Add a title so can differentiate (preferably this server name)
 6) Paste copied key text into Key field
 7) Click Add Key"
 echo -n "Press any key when done ..."
