@@ -24,6 +24,11 @@ APP_PATH=\$ROOT_PATH/releases/\$DATE_STAMP
 cd \$ROOT_PATH/repo
 git pull origin main
 
+# Run the project deploy script, if one provided
+if [[ -e \$ROOT_PATH/repo/scripts/deploy.sh ]]; then
+  \$ROOT_PATH/repo/scripts/deploy.sh
+fi
+
 # Set up release folder
 sudo mkdir -p \$APP_PATH
 
@@ -42,6 +47,10 @@ if [[ \$RES == "y" ]]; then
 else
   sudo cp -r config/ \$APP_PATH/config/
 fi
+
+# Reset any changes we made to the repo files
+# so we don't get merge conflicts on subsequent deployments
+git reset --hard >/dev/null
 
 # Append public file names
 # So old files don't get cached by users
