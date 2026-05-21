@@ -87,9 +87,10 @@ if [[ $S == 'true' ]]; then
 sudo tee -a $ROOT_PATH/deploy.sh >/dev/null <<EOF
 
 # Clone main DB back to staging DB
+psql -c "SELECT pg_terminate_backend(pid) \
+         FROM pg_stat_activity WHERE datname = '$APP_NAME';" >/dev/null
 psql -c "DROP DATABASE IF EXISTS $APP_NAME;" >/dev/null
 createdb $APP_NAME -O $APP_NAME >/dev/null
-#psql -d $APP_NAME -c "GRANT pg_read_all_data, pg_write_all_data to $APP_NAME;" >/dev/null
 pg_dump $S_APP | psql $APP_NAME >/dev/null
 EOF
 fi
