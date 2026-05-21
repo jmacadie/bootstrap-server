@@ -43,10 +43,10 @@ sudo cp -r \$ROOT_PATH/current/.bundle/ \$APP_PATH/.bundle
 
 echo -n "Retain current server config files? (y/n) "
 read RES
-if [[ \$RES == "y" ]]; then
-  sudo cp -r \$ROOT_PATH/current/config/ \$APP_PATH/config/
-else
+if [[ \$RES == "n" ]]; then
   sudo cp -r config/ \$APP_PATH/config/
+else
+  sudo cp -r \$ROOT_PATH/current/config/ \$APP_PATH/config/
 fi
 
 # Reset any changes we made to the repo files
