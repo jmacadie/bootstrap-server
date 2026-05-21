@@ -22,7 +22,8 @@ APP_PATH=\$ROOT_PATH/releases/\$DATE_STAMP
 
 # Pull in the latest code
 cd \$ROOT_PATH/repo
-git pull origin main
+git fetch origin
+git reset --hard origin/main
 
 # Run the project deploy script, if one provided
 if [[ -e \$ROOT_PATH/repo/scripts/deploy.sh ]]; then
